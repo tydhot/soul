@@ -39,7 +39,7 @@ public class SofaMetaDataSubscriber implements MetaDataSubscriber {
     public void onSubscribe(final MetaData metaData) {
         if (RpcTypeEnum.SOFA.getName().equals(metaData.getRpcType())) {
             MetaData exist = META_DATA.get(metaData.getPath());
-            if (Objects.isNull(exist) || Objects.isNull(ApplicationConfigCache.getInstance().get(exist.getPath()).refer())) {
+            if (Objects.isNull(exist) || Objects.isNull(ApplicationConfigCache.getInstance().get(exist.getServiceName()).refer())) {
                 // The first initialization
                 ApplicationConfigCache.getInstance().initRef(metaData);
             } else {
@@ -55,7 +55,7 @@ public class SofaMetaDataSubscriber implements MetaDataSubscriber {
     @Override
     public void unSubscribe(final MetaData metaData) {
         if (RpcTypeEnum.SOFA.getName().equals(metaData.getRpcType())) {
-            ApplicationConfigCache.getInstance().invalidate(metaData.getPath());
+            ApplicationConfigCache.getInstance().invalidate(metaData.getServiceName());
             META_DATA.remove(metaData.getPath());
         }
     }
